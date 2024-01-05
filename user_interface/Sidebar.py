@@ -10,6 +10,13 @@ class Sidebar:
         self.target_class = None
         self.confirm_target_class = False
 
+
+
+
+
+
+
+
     def process_file(self):
         self.uploaded_file = st.sidebar.file_uploader("Choose a file")
         if self.uploaded_file is not None:
@@ -69,8 +76,9 @@ class Sidebar:
         st.sidebar.subheader('Handling Missing Values')
         missing_values_option = st.sidebar.selectbox(
             "Choose an option:",
-            ("Imputation",
-             "Deletion")
+            ("None",
+             "Deletion",
+             "Imputation")
         )
         return missing_values_option
 
@@ -78,8 +86,10 @@ class Sidebar:
         st.sidebar.subheader('Feature Scaling')
         feature_scaling_option = st.sidebar.selectbox(
             "Choose an option:",
-            ("Normalization",
-             "Standardization")
+            ("None",
+             "Normalization",
+             "Standardization"
+             )
         )
         return feature_scaling_option
 
@@ -87,7 +97,8 @@ class Sidebar:
         st.sidebar.subheader('Encoding Categorical Variables')
         categorical_encoding_option = st.sidebar.selectbox(
             "Choose an option:",
-            ("One-Hot Encoding",
+            ("None",
+             "One-Hot Encoding",
              "Label Encoding")
         )
         return categorical_encoding_option
@@ -96,7 +107,19 @@ class Sidebar:
         st.sidebar.subheader('Handling Outliers')
         handling_outliers = st.sidebar.selectbox(
             "Choose an option:",
-            ("Z-score",
+            ("None",
+             "Z-score",
              "IQR")
         )
         return handling_outliers
+
+    def delete_columns(self):
+        st.sidebar.subheader('Delete Columns')
+        columns_to_delete = st.sidebar.multiselect(
+            "Select columns to delete:",
+            self.dataframe.columns.tolist()
+        )
+
+        if st.sidebar.button("Delete Columns"):
+            self.dataframe.drop(columns=columns_to_delete, inplace=True)
+            return True  # Signal that columns were deleted
